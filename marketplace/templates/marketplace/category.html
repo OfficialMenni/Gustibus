@@ -1,0 +1,30 @@
+{% extends "marketplace/base.html" %}
+{% block content %}
+<h1 class="mb-3"> Results for {{ category }}</h1>
+{% for item in all_results %}
+<div class="border pt-3">
+    <article class="media content-section">
+        <image src="{{ item.image.url }}"></image>
+        <div class="media-body">
+            <h2><a class="article-title ml-2" href="{% url 'product-detail' item.id %}">{{ item.item }}</a></h2>
+            <p class="article-content ml-2">{{ item.description }}</p>
+            <p class="article-content ml-2">{{ item.cost }} $</p>
+        </div>
+    </article>
+</div>
+{% empty %}
+{% endfor %}
+{% if is_paginated %}
+<ul class="pagination">
+    {% if page_obj.has_previous %}
+    <span><a class="btn btn-outline-info mr-3 mt-1" href="?page={{ page_obj.previous_page_number }}">Precedente</a></span>
+    {% endif %}
+    <li class="list-group-item list-group-item-secondary">
+        <span>Pagina {{ page_obj.number }} di {{ page_obj.paginator.num_pages }}</span>
+    </li>
+    {% if page_obj.has_next %}
+    <span><a class="btn btn-outline-info ml-3 mt-1" href="?page={{ page_obj.next_page_number }}">Successivo</a></span>
+    {% endif %}
+</ul>
+{% endif %}
+{% endblock content %}

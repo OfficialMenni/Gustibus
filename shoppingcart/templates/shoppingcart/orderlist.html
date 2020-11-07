@@ -1,0 +1,50 @@
+{% extends "marketplace/base.html" %}
+{% block content %}
+{% for order in Orders %}
+<div class="border pt-3 mt-3">
+    <article class="media content-section">
+        <div class="media-body">
+            <p class="article-content ml-2">Codice ordine: {{ order.ref_code }}</p>
+            <p class="article-content ml-2">Data: {{ order.date_ordered}} </p>
+            <table class="table table-hover table-bordered text-center">
+                <tr class="text-center">
+                    <th>Oggetto</th>
+                    <th>Quantità</th>
+                    <th>Prezzo unitario</th>
+                </tr>
+                {% for item in order.items.all %}
+                <tr>
+                    <td><a href="{% url 'product-detail' item.product.id %}">{{ item.product.item }}</a></td>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.product.cost }}$</td>
+                </tr>
+                {% endfor %}
+                <td colspan=2>
+                    <strong class="pull-right">Totale ordine:</strong>
+                </td>
+
+                <td colspan=1>
+                    <strong>{{ order.get_cart_total }}$</strong>
+                </td>
+            </table>
+        </div>
+    </article>
+</div>
+{% empty %}
+<div><h2>Sembra che tu non abbia ancora effettuato ordini!</h2>
+<h4>Qui potrai vedere le informazioni relative a tutti gli ordini da te effettuati!</h4></div>
+{% endfor %}
+{% if is_paginated %}
+<ul class="pagination">
+    {% if page_obj.has_previous %}
+    <span><a class="btn btn-outline-info mr-3 mt-1" href="?page={{ page_obj.previous_page_number }}">Precedente</a></span>
+    {% endif %}
+    <li class="list-group-item list-group-item-secondary">
+        <span>Pagina {{ page_obj.number }} di {{ page_obj.paginator.num_pages }}</span>
+    </li>
+    {% if page_obj.has_next %}
+    <span><a class="btn btn-outline-info ml-3 mt-1" href="?page={{ page_obj.next_page_number }}">Successivo</a></span>
+    {% endif %}
+</ul>
+{% endif %}
+{% endblock content %}

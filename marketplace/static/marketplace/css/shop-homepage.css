@@ -1,0 +1,38 @@
+/*!
+ * Start Bootstrap - Shop Homepage (https://startbootstrap.com/templates/shop-homepage)
+ * Copyright 2013-2020 Start Bootstrap
+ * Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-shop-homepage/blob/master/LICENSE)
+ */
+ body {
+  padding-top: 70px;
+}
+
+.carousel {
+  height: 250px;
+}
+
+.carousel-item,
+.carousel-inner,
+.carousel-inner img {
+  height: 100%;
+  width: 150px;
+  background: lightblue !important;
+
+}
+
+.carousel-item {
+  text-align: left;
+}
+
+.carousel-caption h2 {
+font-family:    Garamond;
+font-size:      1.5em;
+color:          white !important;
+}
+/* Description text */
+.carousel-caption p {
+font-family:    Garamond;
+font-size:      1em;
+color:          black !important;
+text-align:     center;
+}

@@ -1,0 +1,73 @@
+{% extends "marketplace/base.html" %}
+{% block content %}
+{% if isVendor %}
+<h1 class="mb-3">Negozio di {{ owner }}. Valutazione degli utenti: {{ rank }}</h1>
+{% if user == owner %}
+<a class="btn btn-outline-success mb-4" href="{% url 'product_form' %}">Aggiungi altri prodotti</a>
+{% else %}
+{% if isVendor and user.is_authenticated  %}
+<a class="btn btn-outline-info mb-4" href="{% url 'new-review' user.id owner.id %}">Recensisci</a>
+{% endif %}
+{% endif %}
+
+<table class="table table-striped">
+    {% for item in items %}
+    <tr>
+        <th style="width: 40%">
+            <image src="{{ item.image.url }}"></image>
+        </th>
+        <th style="width: 60%">
+            <h2><a class="article-title" href="{% url 'product-detail' item.id %}">{{ item.item }}</a></h2>
+            <p class=" article-content">{{ item.description }}</p>
+            <p class="article-content">Prezzo: {{ item.cost }} $</p>
+        </th>
+    </tr>
+    {% empty %}
+    {% if user == owner %}
+    <div class="border pt-3">
+        <p class="article-content">Il tuo negozio è vuoto! </p>
+        <a href="{% url 'product_form' %}"> Aggiungi un prodotto!</a>
+    </div>
+    {% endif %}
+    {% endfor %}
+</table>
+<!-- pagination -->
+{% if is_paginated %}
+<ul class="pagination">
+    {% if page_obj.has_previous %}
+    <span><a class="btn btn-outline-info mr-3 mt-1" href="?page={{ page_obj.previous_page_number }}">Precedente</a></span>
+    {% endif %}
+    <li class="list-group-item list-group-item-secondary">
+        <span>Pagina {{ page_obj.number }} di {{ page_obj.paginator.num_pages }}</span>
+    </li>
+    {% if page_obj.has_next %}
+    <span><a class="btn btn-outline-info ml-3 mt-1" href="?page={{ page_obj.next_page_number }}">Successivo</a></span>
+    {% endif %}
+</ul>
+{% endif %}
+<!-- end pagination -->
+{% if isVendor %}
+<h2 class="mt-4 mb-4">{{ owner.username }}'s Reviews:</h2>
+<table class="table table-striped">
+    {% for rev in reviews %}
+    <tr>
+        <th style="width: 100%">
+            <p class="article-content"><b>Title:</b> {{ rev.title}} </p>
+            <p class="article-content"><b>Author:</b> {{ rev.posted_by.username}} </p>
+            <p class="article-content"><b>Date:</b> {{ rev.date}} </p>
+            <p class="article-content">{{ rev.text}} </p>
+            {% if rev.image %}
+            <img class="img-responsive" src="{{ rev.image.url }}"></img>
+        </th>
+        {% endif %}
+    </tr>
+    {% empty %}
+    <h2>Ancora nessuna recensione per {{ owner.username }}!</h2>
+    {% endfor %}
+    {% endif %}
+</table>
+{% else %}
+<h2> Sembra che tu non sia un venditore...</h2>
+<a href="{% url 'upgrade' %}"> Diventa un venditore</a>
+{% endif %}
+{% endblock content %}

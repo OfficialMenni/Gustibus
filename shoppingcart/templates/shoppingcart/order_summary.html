@@ -1,0 +1,85 @@
+{% extends "marketplace/base.html" %}
+
+{% block content %}
+
+<section>
+    <div class="row">
+        <table class="table table-hover table-bordered text-center">
+            <tr class="text-center">
+                <th>no.</th>
+                <th>Quantità</th>
+                <th>Immagine</th>
+                <th>Oggetto</th>
+                <th>Prezzo unitario</th>
+                <th>Prezzo totale</th>
+                <th>Azioni</th>
+            </tr>
+            {% for item in order.get_cart_items %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ item.quantity }}</td>
+                <td><img src="{{ item.product.image.url}}"></td>
+                <td>
+                    {{ item.product.item }}
+                </td>
+                <td>{{ item.product.cost }}$</td>
+                <td><strong>{{ item.partial }}$</strong></td>
+                <td>
+                    <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'remove-item' item.id %}">Rimuovi</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan=7> Non hai oggetti nel carrello.</td>
+            </tr>
+            {% endfor %}
+            <tr>
+                {% if order.get_cart_total != null %}
+                <td colspan=5>
+                    <strong class="pull-right">Totale ordine:</strong>
+                </td>
+
+                <td colspan=5>
+                    <strong>{{ order.get_cart_total }}$</strong>
+                </td>
+                {% endif %}
+            </tr>
+            <tr>
+                <td colspan=1>
+                    <a href="{% url 'home' %}" class="btn btn-warning pull-left">
+                        {% if order %}Continua lo shopping{% else %} Aggiungi oggetti al carrello!{% endif %}
+                    </a>
+                </td>
+                <td colspan=4>
+                    {% if order.get_cart_items %}
+                    <a href="{% url 'update-records' order.id %}" class="pull-right btn btn-primary">Procedi al
+                        Checkout</a>
+                    {% endif %}
+                </td>
+            </tr>
+        </table>
+
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+{{ block.super }}
+<script>
+  function confirm_delete(){
+    return confirm("Vuoi davvero rimuovere questo oggetto?");
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+{% endblock scripts %}

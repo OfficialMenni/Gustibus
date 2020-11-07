@@ -1,0 +1,37 @@
+{% extends "marketplace/base.html" %}
+{% block content %}
+{% load crispy_forms_tags %}
+<div class="border pt-3">
+    <article class="media content-section">
+        <image class="img-responsive article-img mr-3" src="{{ object.image.url }}"></image>
+        <div class="media-body">
+            <h1 class="">{{ object.item }}</h1>
+            <h4 class="text-secondary mb-4 mt-2">{{ object.description }}</h4>
+            <h4 class="mb-2">Prezzo: {{ object.cost }} $</h4>
+            <h6 class="text-secondary mb-4 mt-2">Rimanente: {{ object.quantity }} </h6>
+            Venditore:
+            <a href="{% url 'myshop' object.vendor.user.username %}">{{ object.vendor.user.username}}</a>
+            {% if object.vendor.user.username != user.username %}
+            {% if object.available %}
+            <form action="{% url 'add-to-cart' product.id %}" method="post">
+                {{ form|crispy }}
+                {% csrf_token %}
+                <input type="submit" class="btn btn-outline-primary mb-3" value="Aggiungi al carrello">
+            </form>
+            {% else %}
+            <div>
+                <h3> Oggetto attualmente non disponibile!</h3>
+            </div>
+            {% endif %}
+            {% endif %}
+            {% if object.vendor.user.username == user.username %}
+            <div>
+                <a class="btn btn-outline-success ml-3 mt-2 mb-2" href="{% url 'item-update' object.id %}">Modifica</a>
+                <a class="btn btn-outline-danger mt-2 mb-2" href="{% url 'item-delete' object.id %}">Elimina</a>
+            </div>
+            {% endif %}
+
+        </div>
+    </article>
+</div>
+{% endblock content %}

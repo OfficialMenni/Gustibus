@@ -1,0 +1,93 @@
+{% extends "marketplace/base.html" %}
+{% block content %}
+{% load crispy_forms_tags %}
+{% load static %}
+<!-- Page Content -->
+<h1 class="display-2" align="center">Gustibus Shop</h1>
+<!-- carousel -->
+<div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
+    <ol class="carousel-indicators">
+        <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
+        <li data-target="#carouselExampleCaptions" data-slide-to="1"></li>
+        <li data-target="#carouselExampleCaptions" data-slide-to="2"></li>
+    </ol>
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <img src="{{ p1.image.url }}" class="img-fluid" alt="...">
+            <div class="carousel-caption">
+                <h2><a href="{% url 'product-detail' p1.id %}">{{ p1.item }}</a></h2>
+                <p> {{ p1.description }}</p>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <img src="{{ p2.image.url }}" class="img-fluid" alt="...">
+            <div class="carousel-caption">
+                <h2><a href="{% url 'product-detail' p2.id %}">{{ p2.item }}</a></h2>
+                <p> {{ p2.description }}</p>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <img src="{{ p3.image.url }}" class="img-fluid" alt="...">
+            <div class="carousel-caption">
+                <h2><a href="{% url 'product-detail' p3.id %}">{{ p3.item }}</a></h2>
+                <p> {{ p3.description }}</p>
+            </div>
+        </div>
+    </div>
+    <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Precedente</span>
+    </a>
+    <a class="carousel-control-next" href="#carouselExampleCaptions" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Successivo</span>
+    </a>
+</div>
+<!-- end carousel -->
+<div class="container">
+    <div class="row mb-3">
+        <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle mt-3 mb-3" data-toggle="dropdown">
+                Filtra per categoria
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="{% url 'category' 'Main courses'%}" class="list-group-item">Primi </a></li>
+                <li><a href="{% url 'category' 'Steaks'%}" class="list-group-item">Secondi</a></li>
+                <li><a href="{% url 'category' 'Drinks and Beverage'%}" class="list-group-item">Drink & bevande</a>
+                </li>
+                <li><a href="{% url 'category' 'Desserts'%}" class="list-group-item">Desserts</a></li>
+            </ul>
+        </div>
+        <!-- /.row -->
+
+    </div>
+    <!-- /.col-lg-3 -->
+    <div class="row">
+        {% for product in products_header %}
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100">
+                <a href="{% url 'product-detail' product.id %}"><img
+                        src="{{ product.image.url }}"></a>
+                <div class="card-body">
+                    <h4 class="card-title">
+                        <a href="{% url 'product-detail' product.id %}">{{ product.item }}</a>
+                    </h4>
+                    <h5>{{ product.cost }}$</h5>
+                    <p class="card-text">{{ product.description }}</p>
+                    <p class="card-text">Rimanenti: {{ product.quantity }}</p>
+                    Venditore:
+                    <a href="{% url 'myshop' product.vendor.user.username %}">{{ product.vendor.user.username}}</a>
+                </div>
+                <div class="card-footer">
+                    <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <!-- /.col-lg-9 -->
+
+
+</div>
+<!-- /.container -->
+{% endblock content %}

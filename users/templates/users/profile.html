@@ -1,0 +1,30 @@
+{% extends "marketplace/base.html" %}
+{% block content %}
+{% load crispy_forms_tags %}
+
+<div class="content-section">
+    <div class="media">
+        <img class="rounded-circle account-img" src="{{ user.profile.image.url }}">
+        <div class="media-body">
+            <h2 class="account-heading ml-4">{{ user.username }}</h2>
+            <h4 class="text-secondary ml-4">{{ user.email }}</h4>
+           <h4 class="ml-4"> Portafogli: <a class="text" href="{% url 'more-money' %}">{{ user.profile.money }}$</a></h4>
+        </div>
+    </div>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <fiedlset class="form-group">
+            <legend class="border-bottom mb-4">Informazioni del profilo</legend>
+            {% if user == vendor.user %}
+            <a class="btn btn-outline-danger mt-1 mb-2" href="{% url 'vendor-profile-update' vendor.id %}">Passa al profilo
+                venditore</a>
+            {% endif %}
+        </fiedlset>
+        {{ u_form|crispy }}
+        {{ p_form|crispy }}
+        <div class="form-group">
+            <button class="btn btn-outline-info" type="submit">Aggiorna</button>
+        </div>
+    </form>
+</div>
+{% endblock content %}
